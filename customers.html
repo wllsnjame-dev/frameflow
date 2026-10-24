@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Frameflow | Customers</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="factory-core.js"></script>
+<script src="supabase-adapter.js"></script>
+<script src="status-ui.js"></script>
+<link rel="stylesheet" href="responsive-fix.css">
+<style>
+:root{--ink:#18242b;--muted:#6f7b7d;--paper:#f5f7f4;--line:#dfe5df;--white:#fff;--teal:#087f78;--lime:#cce86b;--orange:#ec8b4e;--navy:#20383d;--shadow:0 12px 30px #20383d12;--red:#a74930}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.45 Georgia,serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}.side{background:var(--navy);color:#e9f0e9;padding:25px 17px}.brand{font:700 23px Arial,sans-serif;margin:0 10px 38px}.brand span{color:var(--lime)}.eyebrow{font:10px Arial,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#9eb8b2;margin:0 10px 10px}.side a{display:block;color:#bed0ca;text-decoration:none;font:600 13px Arial,sans-serif;padding:11px 12px;border-radius:6px;margin-bottom:4px}.side a:hover,.side a.active{background:#315359;color:#fff}.side-footer{margin:50px 10px 0;border-top:1px solid #456166;padding-top:18px;font:12px Arial,sans-serif}.side-footer strong{display:block;color:#fff}.side-footer span{color:#9eb8b2}.main{min-width:0}.top{height:76px;background:#fff;border-bottom:1px solid var(--line);padding:0 38px;display:flex;justify-content:space-between;align-items:center;font:12px Arial,sans-serif}.avatar{width:34px;height:34px;background:var(--lime);border-radius:50%;display:inline-grid;place-items:center;font-weight:bold;margin-left:10px}.content{max-width:1280px;margin:auto;padding:35px 38px 60px}.heading{display:flex;justify-content:space-between;align-items:end;margin-bottom:25px}.kicker{font:700 11px Arial,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:8px}.heading h1{font-size:36px;line-height:1;margin:0}.heading p{color:var(--muted);margin:9px 0 0}.actions{display:flex;gap:8px;flex-wrap:wrap}.primary,.secondary,.danger{border-radius:5px;padding:11px 14px;font:700 12px Arial,sans-serif}.primary{background:var(--teal);color:#fff}.secondary{background:#eaf0e9;color:var(--teal)}.danger{background:#fff0e8;color:var(--red)}.card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:18px}.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.toolbar input,.toolbar select,.field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}.field textarea{min-height:90px}table{width:100%;border-collapse:collapse;background:#fff}.th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.thead th{font:700 11px Arial,sans-serif;letter-spacing:0.6px;text-transform:uppercase;color:var(--muted);background:#f6faf8}.actions-cell{display:flex;gap:8px;flex-wrap:wrap}.mini{padding:8px 10px;border-radius:6px;font:700 11px Arial,sans-serif}.modal{position:fixed;inset:0;background:rgba(15,20,23,.45);display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-box{background:#fff;border-radius:12px;width:min(760px, 100%);max-height:90vh;overflow:auto;padding:20px;border:1px solid var(--line)}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field.full{grid-column:1/-1}.sr{display:none}.@media (max-width:900px){.layout{grid-template-columns:1fr}.side{padding:16px}.content{padding:20px 14px 40px}.form-grid{grid-template-columns:1fr}.toolbar input,.toolbar select{min-width:0;flex:1 1 180px}}</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <div class="brand">frame<span>flow</span></div>
+    <div class="eyebrow">Workspace</div>
+    <a href="app.html">Dashboard</a>
+    <a class="active" href="customers.html">Customers</a>
+    <a href="products.html">Products</a>
+    <a href="quotation.html">Quotations</a>
+    <a href="orders.html">Orders</a>
+    <a href="invoices.html">Invoices</a>
+    <a href="production.html">Production</a>
+    <a href="stock.html">Stock</a>
+    <a href="reports.html">Reports</a>
+    <a href="settings.html">Settings</a>
+    <div class="side-footer"><strong>Northside Windows Ltd</strong><span>Owner workspace · UK</span></div>
+  </aside>
+  <main class="main">
+    <header class="top"><span>Customers / CRM</span><span>Alex Morgan <i class="avatar">AM</i></span></header>
+    <section class="content">
+      <div class="heading">
+        <div>
+          <div class="kicker">CRM</div>
+          <h1>Customers</h1>
+          <p>Manage customer records, order history and factory contacts.</p>
+        </div>
+        <div class="actions"><button class="primary" id="newCustomer">+ Add customer</button></div>
+      </div>
+      <div class="card">
+        <div class="toolbar">
+          <input id="search" placeholder="Search customer, company, phone, email or postcode…">
+        </div>
+        <div style="overflow:auto">
+          <table>
+            <thead class="thead"><tr><th>Name</th><th>Company</th><th>Phone</th><th>Email</th><th>Address</th><th>Postcode</th><th>Order history</th><th>Actions</th></tr></thead>
+            <tbody id="customerRows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="customerModal">
+  <div class="modal-box">
+    <h2 id="modalTitle">Add customer</h2>
+    <form id="customerForm">
+      <input type="hidden" id="customerId">
+      <div class="form-grid">
+        <label class="field"><span>Name</span><input name="name" required></label>
+        <label class="field"><span>Company</span><input name="company"></label>
+        <label class="field"><span>Phone</span><input name="phone"></label>
+        <label class="field"><span>Email</span><input name="email" type="email"></label>
+        <label class="field full"><span>Address</span><textarea name="address"></textarea></label>
+        <label class="field"><span>Postcode</span><input name="postcode"></label>
+        <label class="field"><span>Notes</span><textarea name="notes"></textarea></label>
+      </div>
+      <div class="actions" style="margin-top:18px; justify-content:flex-end;">
+        <button type="button" class="secondary" id="cancelCustomer">Cancel</button>
+        <button type="submit" class="primary">Save customer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+  const db = window.frameflow ? window.frameflow.readDb() : JSON.parse(localStorage.getItem('frameflow') || '{}');
+  const save = () => { if (window.frameflow) { window.frameflow.saveDb(db); } else { localStorage.setItem('frameflow', JSON.stringify(db)); } };
+  const $ = (id) => document.getElementById(id);
+  const money = (n) => new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'}).format(Number(n)||0);
+
+  function customerHistoryCount(customer) {
+    const customerName = customer.name || '';
+    return (db.quotes || []).filter((q) => (q.customer || '') === customerName).length + (db.orders || []).filter((o) => (o.customer || '') === customerName).length + (db.invoices || []).filter((i) => (i.customer || '') === customerName).length;
+  }
+
+  function render() {
+    const query = ($('search').value || '').toLowerCase();
+    const list = (db.customers || []).filter((customer) => {
+      const haystack = [customer.name, customer.company, customer.phone, customer.email, customer.address, customer.postcode, customer.notes].join(' ').toLowerCase();
+      return !query || haystack.includes(query);
+    });
+
+    $('customerRows').innerHTML = list.map((customer) => `
+      <tr>
+        <td><strong>${customer.name || 'Unnamed customer'}</strong></td>
+        <td>${customer.company || '—'}</td>
+        <td>${customer.phone || '—'}</td>
+        <td>${customer.email || '—'}</td>
+        <td>${customer.address || '—'}</td>
+        <td>${customer.postcode || '—'}</td>
+        <td>${customerHistoryCount(customer)}</td>
+        <td>
+          <div class="actions-cell">
+            <button class="mini secondary" data-edit="${customer.id || customer.name}">Edit</button>
+            <button class="mini danger" data-delete="${customer.id || customer.name}">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join('') || '<tr><td colspan="8">No customers match your search.</td></tr>';
+  }
+
+  function openModal(customer) {
+    const form = $('customerForm');
+    if (customer) {
+      form.customerId.value = customer.id || customer.name;
+      form.name.value = customer.name || '';
+      form.company.value = customer.company || '';
+      form.phone.value = customer.phone || '';
+      form.email.value = customer.email || '';
+      form.address.value = customer.address || '';
+      form.postcode.value = customer.postcode || '';
+      form.notes.value = customer.notes || '';
+      $('modalTitle').textContent = 'Edit customer';
+    } else {
+      form.reset();
+      form.customerId.value = '';
+      $('modalTitle').textContent = 'Add customer';
+    }
+    $('customerModal').classList.add('show');
+  }
+
+  function closeModal() {
+    $('customerModal').classList.remove('show');
+    $('customerForm').reset();
+  }
+
+  $('newCustomer').onclick = () => openModal(null);
+  $('cancelCustomer').onclick = closeModal;
+  $('search').addEventListener('input', render);
+
+  $('customerForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const payload = Object.fromEntries(formData.entries());
+    const id = $('customerId').value || `CUST-${Date.now()}`;
+
+    if (!payload.name || !payload.name.trim()) {
+      alert('Customer name is required.');
+      return;
+    }
+    if (payload.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(payload.email.trim())) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    const existing = (db.customers || []).findIndex((customer) => (customer.id || customer.name) === id);
+    const record = {
+      id,
+      name: payload.name.trim(),
+      company: payload.company ? payload.company.trim() : '',
+      phone: payload.phone ? payload.phone.trim() : '',
+      email: payload.email ? payload.email.trim() : '',
+      address: payload.address ? payload.address.trim() : '',
+      postcode: payload.postcode ? payload.postcode.trim() : '',
+      notes: payload.notes ? payload.notes.trim() : ''
+    };
+
+    if (existing >= 0) {
+      db.customers[existing] = { ...db.customers[existing], ...record };
+    } else {
+      if ((db.customers || []).some((customer) => (customer.name || '').toLowerCase() === record.name.toLowerCase() && (customer.company || '').toLowerCase() === (record.company || '').toLowerCase())) {
+        alert('This customer appears to already exist.');
+        return;
+      }
+      db.customers.push(record);
+    }
+
+    save();
+    closeModal();
+    render();
+  });
+
+  $('customerRows').addEventListener('click', function (event) {
+    const editId = event.target.dataset.edit;
+    const deleteId = event.target.dataset.delete;
+    if (editId) {
+      const customer = (db.customers || []).find((entry) => (entry.id || entry.name) === editId);
+      if (customer) openModal(customer);
+    }
+    if (deleteId) {
+      const customer = (db.customers || []).find((entry) => (entry.id || entry.name) === deleteId);
+      if (!customer) return;
+      const confirmDelete = window.confirm(`Delete ${customer.name}? This will remove the customer record from the database.`);
+      if (!confirmDelete) return;
+      db.customers = (db.customers || []).filter((entry) => (entry.id || entry.name) !== deleteId);
+      save();
+      render();
+    }
+  });
+
+  render();
+})();
+</script>
+<script src="customer-management.js"></script>
+</body>
+</html>

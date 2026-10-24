@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Frameflow | Products</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-config.js"></script>
+<script src="factory-core.js"></script>
+<script src="pricing-engine.js"></script>
+<script src="supabase-adapter.js"></script>
+<script src="status-ui.js"></script>
+<link rel="stylesheet" href="responsive-fix.css">
+<style>
+:root{--ink:#18242b;--muted:#6f7b7d;--paper:#f5f7f4;--line:#dfe5df;--white:#fff;--teal:#087f78;--lime:#cce86b;--orange:#ec8b4e;--navy:#20383d;--shadow:0 12px 30px #20383d12;--red:#a74930}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.45 Georgia,serif}button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}.layout{display:grid;grid-template-columns:220px 1fr;min-height:100vh}.side{background:var(--navy);color:#e9f0e9;padding:25px 17px}.brand{font:700 23px Arial,sans-serif;margin:0 10px 38px}.brand span{color:var(--lime)}.eyebrow{font:10px Arial,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:#9eb8b2;margin:0 10px 10px}.side a{display:block;color:#bed0ca;text-decoration:none;font:600 13px Arial,sans-serif;padding:11px 12px;border-radius:6px;margin-bottom:4px}.side a:hover,.side a.active{background:#315359;color:#fff}.side-footer{margin:50px 10px 0;border-top:1px solid #456166;padding-top:18px;font:12px Arial,sans-serif}.side-footer strong{display:block;color:#fff}.side-footer span{color:#9eb8b2}.main{min-width:0}.top{height:76px;background:#fff;border-bottom:1px solid var(--line);padding:0 38px;display:flex;justify-content:space-between;align-items:center;font:12px Arial,sans-serif}.avatar{width:34px;height:34px;background:var(--lime);border-radius:50%;display:inline-grid;place-items:center;font-weight:bold;margin-left:10px}.content{max-width:1280px;margin:auto;padding:35px 38px 60px}.heading{display:flex;justify-content:space-between;align-items:end;margin-bottom:25px}.kicker{font:700 11px Arial,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal);margin-bottom:8px}.heading h1{font-size:36px;line-height:1;margin:0}.heading p{color:var(--muted);margin:9px 0 0}.actions{display:flex;gap:8px;flex-wrap:wrap}.primary,.secondary,.danger{border-radius:5px;padding:11px 14px;font:700 12px Arial,sans-serif}.primary{background:var(--teal);color:#fff}.secondary{background:#eaf0e9;color:var(--teal)}.danger{background:#fff0e8;color:var(--red)}.card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:18px}.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.toolbar input,.toolbar select,.field input,.field textarea,.field select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}.field textarea{min-height:100px}table{width:100%;border-collapse:collapse}.thead th,td{padding:12px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}.thead th{font:700 11px Arial,sans-serif;letter-spacing:0.6px;text-transform:uppercase;color:var(--muted);background:#f6faf8}.actions-cell{display:flex;gap:8px;flex-wrap:wrap}.mini{padding:8px 10px;border-radius:6px;font:700 11px Arial,sans-serif}.modal{position:fixed;inset:0;background:rgba(15,20,23,.45);display:none;align-items:center;justify-content:center;padding:20px}.modal.show{display:flex}.modal-box{background:#fff;border-radius:12px;width:min(860px,100%);max-height:90vh;overflow:auto;padding:20px;border:1px solid var(--line)}.form-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}.field.full{grid-column:1/-1}.@media (max-width:900px){.layout{grid-template-columns:1fr}.side{padding:16px}.content{padding:20px 14px 40px}.form-grid{grid-template-columns:1fr}.toolbar input,.toolbar select{min-width:0;flex:1 1 180px}}</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="side">
+    <div class="brand">frame<span>flow</span></div>
+    <div class="eyebrow">Workspace</div>
+    <a href="app.html">Dashboard</a>
+    <a href="customers.html">Customers</a>
+    <a class="active" href="products.html">Products</a>
+    <a href="quotation.html">Quotations</a>
+    <a href="orders.html">Orders</a>
+    <a href="invoices.html">Invoices</a>
+    <a href="production.html">Production</a>
+    <a href="stock.html">Stock</a>
+    <a href="reports.html">Reports</a>
+    <a href="settings.html">Settings</a>
+    <div class="side-footer"><strong>Northside Windows Ltd</strong><span>Owner workspace · UK</span></div>
+  </aside>
+  <main class="main">
+    <header class="top"><span>Products / Catalogue</span><span>Alex Morgan <i class="avatar">AM</i></span></header>
+    <section class="content">
+      <div class="heading">
+        <div>
+          <div class="kicker">Catalogue</div>
+          <h1>Products</h1>
+          <p>Manage standard UPVC and door product specs for quotation and production.</p>
+        </div>
+        <div class="actions"><button class="primary" id="newProduct">+ Add product</button></div>
+      </div>
+      <div class="card">
+        <div class="toolbar">
+          <input id="search" placeholder="Search product type, colour, glass or notes…">
+          <select id="typeFilter"><option value="">All types</option><option>UPVC Window</option><option>UPVC Door</option><option>Composite Door</option><option>French Door</option><option>Patio Door</option><option>Bi-fold Door</option></select>
+        </div>
+        <div style="overflow:auto">
+          <table>
+            <thead class="thead"><tr><th>Product</th><th>Type</th><th>Size</th><th>Qty</th><th>Colour</th><th>Glass</th><th>Opening</th><th>Frame</th><th>Hardware</th><th>Price</th><th>Actions</th></tr></thead>
+            <tbody id="productRows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="productModal">
+  <div class="modal-box">
+    <h2 id="modalTitle">Add product</h2>
+    <form id="productForm">
+      <input type="hidden" id="productId">
+      <div class="form-grid">
+        <label class="field"><span>Product name</span><input name="name" required></label>
+        <label class="field"><span>Type</span><select name="type"><option>UPVC Window</option><option>UPVC Door</option><option>Composite Door</option><option>French Door</option><option>Patio Door</option><option>Bi-fold Door</option></select></label>
+        <label class="field"><span>Width (mm)</span><input name="width" type="number" min="1" required></label>
+        <label class="field"><span>Height (mm)</span><input name="height" type="number" min="1" required></label>
+        <label class="field"><span>Quantity</span><input name="quantity" type="number" min="1" value="1"></label>
+        <label class="field"><span>Colour</span><input name="colour"></label>
+        <label class="field"><span>Glass type</span><input name="glass"></label>
+        <label class="field"><span>Opening type</span><input name="opening"></label>
+        <label class="field"><span>Frame / profile</span><input name="profile"></label>
+        <label class="field"><span>Hardware</span><input name="hardware"></label>
+        <label class="field"><span>Price</span><input name="price" type="number" min="0" step="0.01"></label>
+        <label class="field full"><span>Notes</span><textarea name="notes"></textarea></label>
+      </div>
+      <div class="actions" style="margin-top:18px; justify-content:flex-end;">
+        <button type="button" class="secondary" id="cancelProduct">Cancel</button>
+        <button type="submit" class="primary">Save product</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+(function(){
+  const db = window.frameflow ? window.frameflow.readDb() : JSON.parse(localStorage.getItem('frameflow') || '{}');
+  const save = () => { if (window.frameflow) { window.frameflow.saveDb(db); } else { localStorage.setItem('frameflow', JSON.stringify(db)); } };
+  const $ = (id) => document.getElementById(id);
+  const money = (n) => new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'}).format(Number(n)||0);
+
+  function render() {
+    const query = ($('search').value || '').toLowerCase();
+    const typeFilter = $('typeFilter').value;
+    const list = (db.products || []).filter((product) => {
+      if (typeFilter && product.type !== typeFilter) return false;
+      const haystack = [product.name, product.type, product.colour, product.glass, product.opening, product.profile, product.hardware, product.notes].join(' ').toLowerCase();
+      return !query || haystack.includes(query);
+    });
+
+    $('productRows').innerHTML = list.map((product) => `
+      <tr>
+        <td><strong>${product.name || 'Unnamed product'}</strong></td>
+        <td>${product.type || '—'}</td>
+        <td>${product.width || 0} × ${product.height || 0}</td>
+        <td>${product.quantity || 0}</td>
+        <td>${product.colour || '—'}</td>
+        <td>${product.glass || '—'}</td>
+        <td>${product.opening || '—'}</td>
+        <td>${product.profile || '—'}</td>
+        <td>${product.hardware || '—'}</td>
+        <td>${money(product.price || 0)}</td>
+        <td>
+          <div class="actions-cell">
+            <button class="mini secondary" data-edit="${product.id || product.name}">Edit</button>
+            <button class="mini danger" data-delete="${product.id || product.name}">Archive</button>
+          </div>
+        </td>
+      </tr>
+    `).join('') || '<tr><td colspan="11">No products match your filters.</td></tr>';
+  }
+
+  function openModal(product) {
+    const form = $('productForm');
+    if (product) {
+      form.productId.value = product.id || product.name;
+      form.name.value = product.name || '';
+      form.type.value = product.type || 'UPVC Window';
+      form.width.value = product.width || 0;
+      form.height.value = product.height || 0;
+      form.quantity.value = product.quantity || 1;
+      form.colour.value = product.colour || '';
+      form.glass.value = product.glass || '';
+      form.opening.value = product.opening || '';
+      form.profile.value = product.profile || '';
+      form.hardware.value = product.hardware || '';
+      form.price.value = product.price || 0;
+      form.notes.value = product.notes || '';
+      $('modalTitle').textContent = 'Edit product';
+    } else {
+      form.reset();
+      form.productId.value = '';
+      form.quantity.value = 1;
+      $('modalTitle').textContent = 'Add product';
+    }
+    $('productModal').classList.add('show');
+  }
+
+  function closeModal() {
+    $('productModal').classList.remove('show');
+    $('productForm').reset();
+  }
+
+  $('newProduct').onclick = () => openModal(null);
+  $('cancelProduct').onclick = closeModal;
+  $('search').addEventListener('input', render);
+  $('typeFilter').addEventListener('change', render);
+
+  $('productForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+    const payload = Object.fromEntries(formData.entries());
+    const id = $('productId').value || `PROD-${Date.now()}`;
+
+    if (!payload.name || !payload.name.trim()) {
+      alert('Product name is required.');
+      return;
+    }
+    if (Number(payload.width) <= 0 || Number(payload.height) <= 0) {
+      alert('Width and height must be greater than zero.');
+      return;
+    }
+
+    const record = {
+      id,
+      name: payload.name.trim(),
+      type: payload.type,
+      width: Number(payload.width),
+      height: Number(payload.height),
+      quantity: Number(payload.quantity || 1),
+      colour: payload.colour || '',
+      glass: payload.glass || '',
+      opening: payload.opening || '',
+      profile: payload.profile || '',
+      hardware: payload.hardware || '',
+      price: Number(payload.price || 0),
+      notes: payload.notes || '',
+      archived: false
+    };
+
+    const existingIndex = (db.products || []).findIndex((product) => (product.id || product.name) === id);
+    if (existingIndex >= 0) {
+      db.products[existingIndex] = { ...db.products[existingIndex], ...record };
+    } else {
+      db.products.push(record);
+    }
+
+    save();
+    closeModal();
+    render();
+  });
+
+  $('productRows').addEventListener('click', function (event) {
+    const editId = event.target.dataset.edit;
+    const deleteId = event.target.dataset.delete;
+    if (editId) {
+      const product = (db.products || []).find((entry) => (entry.id || entry.name) === editId);
+      if (product) openModal(product);
+    }
+    if (deleteId) {
+      const product = (db.products || []).find((entry) => (entry.id || entry.name) === deleteId);
+      if (!product) return;
+      const confirmDelete = window.confirm(`Archive ${product.name}?`);
+      if (!confirmDelete) return;
+      const index = (db.products || []).findIndex((entry) => (entry.id || entry.name) === deleteId);
+      if (index >= 0) {
+        db.products[index].archived = true;
+      }
+      save();
+      render();
+    }
+  });
+
+  render();
+})();
+</script>
+<script src="product-designer.js"></script>
+<script src="pricing-ui.js"></script>
+<script src="designer-price-preview.js"></script>
+</body>
+</html>
